@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { fetchProducts, createProduct, updateProduct, deleteProduct } from '../api';
 import { Search, Plus, Filter, Package, Trash2, Edit2 } from 'lucide-react';
 import ProductFormModal from '../components/ProductFormModal';
 
 const Products = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
@@ -72,9 +76,26 @@ const Products = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    setCurrentPage(1); // Reset to first page on search
+    if (value) {
+      setSearchParams({ search: value });
+    } else {
+      setSearchParams({});
+    }
+  };
+
   const filteredProducts = products.filter(p => 
     p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     p.sku.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   return (
@@ -103,7 +124,7 @@ const Products = () => {
             <input
               type="text"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
               className="input-field pl-10 py-2.5 sm:text-sm"
               placeholder="Search by name or SKU..."
             />
@@ -141,7 +162,7 @@ const Products = () => {
                   </td>
                 </tr>
               ) : (
-                filteredProducts.map(product => (
+                paginatedProducts.map(product => (
                   <tr key={product._id} className="group">
                     <td>
                       <div className="flex items-center gap-4">
@@ -188,12 +209,27 @@ const Products = () => {
           </table>
         </div>
         
-        {/* Pagination placeholder */}
+        {/* Pagination */}
         <div className="p-4 border-t border-slate-800/60 flex items-center justify-between text-sm text-slate-400 bg-slate-900/20">
-          <div>Showing {filteredProducts.length} of {products.length} products</div>
+          <div>
+            Showing {Math.min((currentPage - 1) * itemsPerPage + 1, filteredProducts.length)} to {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of {filteredProducts.length} products
+          </div>
           <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 rounded-lg border border-slate-700/50 hover:bg-slate-800 hover:text-slate-200 disabled:opacity-50">Previous</button>
-            <button className="px-3 py-1.5 rounded-lg border border-slate-700/50 hover:bg-slate-800 hover:text-slate-200 disabled:opacity-50">Next</button>
+            <button 
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1.5 rounded-lg border border-slate-700/50 hover:bg-slate-800 hover:text-slate-200 disabled:opacity-50 disabled:hover:bg-transparent"
+            >
+              Previous
+            </button>
+            <span className="px-2 font-medium">Page {currentPage} of {Math.max(totalPages, 1)}</span>
+            <button 
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages || totalPages === 0}
+              className="px-3 py-1.5 rounded-lg border border-slate-700/50 hover:bg-slate-800 hover:text-slate-200 disabled:opacity-50 disabled:hover:bg-transparent"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
