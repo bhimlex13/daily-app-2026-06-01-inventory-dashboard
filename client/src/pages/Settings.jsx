@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSettings } from '../contexts/SettingsContext';
-import { Download, Monitor, Moon, Sun, DollarSign, Settings as SettingsIcon } from 'lucide-react';
+import { Download, Monitor, Moon, Sun, DollarSign, Settings as SettingsIcon, Package } from 'lucide-react';
 import axios from 'axios';
 
 const Settings = () => {

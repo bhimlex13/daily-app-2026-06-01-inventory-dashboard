@@ -29,13 +29,15 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}
       >
-        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800/50">
-          <div className="flex items-center gap-3 text-indigo-400 font-bold text-xl tracking-tight overflow-hidden">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 shrink-0">
-              <Package size={18} />
+        <div className={`h-16 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between px-4'} border-b border-slate-800/50`}>
+          {!isCollapsed && (
+            <div className="flex items-center gap-3 text-indigo-400 font-bold text-xl tracking-tight overflow-hidden">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 shrink-0">
+                <Package size={18} />
+              </div>
+              <span>Inventorio</span>
             </div>
-            {!isCollapsed && <span>Inventorio</span>}
-          </div>
+          )}
           <button 
             className="md:hidden text-slate-400 hover:text-slate-200 p-1"
             onClick={() => setIsMobileOpen(false)}
@@ -43,10 +45,10 @@ const Sidebar = ({ isMobileOpen, setIsMobileOpen }) => {
             <X size={20} />
           </button>
           <button 
-            className="hidden md:block text-slate-400 hover:text-slate-200 p-1 rounded-md hover:bg-slate-800/50"
+            className={`hidden md:flex text-slate-400 hover:text-slate-200 p-1.5 rounded-md hover:bg-slate-800/50 items-center justify-center ${isCollapsed ? 'w-10 h-10' : ''}`}
             onClick={() => setIsCollapsed(!isCollapsed)}
           >
-            {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+            {isCollapsed ? <ChevronRight size={22} /> : <ChevronLeft size={20} />}
           </button>
         </div>
         
