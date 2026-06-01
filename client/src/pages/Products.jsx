@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { fetchProducts, createProduct, updateProduct, deleteProduct } from '../api';
+import { fetchProducts, fetchCategories, createProduct, updateProduct, deleteProduct } from '../api';
 import { Search, Plus, Filter, Package, Trash2, Edit2 } from 'lucide-react';
 import ProductFormModal from '../components/ProductFormModal';
 import { useSettings } from '../contexts/SettingsContext';
@@ -11,6 +11,8 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [currentPage, setCurrentPage] = useState(1);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -23,9 +25,15 @@ const Products = () => {
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetchProducts({ limit: 50 }); // Fetch top 50 for demo
-      if (response.data.success) {
-        setProducts(response.data.data);
+      const [productsRes, categoriesRes] = await Promise.all([
+        fetchProducts({ limit: 50 }),
+        fetchCategories()
+      ]);
+      if (productsRes.data.success) {
+        setProducts(productsRes.data.data);
+      }
+      if (categoriesRes.data.success) {
+        setCategories(categoriesRes.data.data);
       }
     } catch (error) {
       console.error('Failed to load products:', error);
@@ -89,10 +97,11 @@ const Products = () => {
     }
   };
 
-  const filteredProducts = products.filter(p => 
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    p.sku.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products.filter(p => {
+    const searchMatch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.sku.toLowerCase().includes(searchTerm.toLowerCase());
+    const categoryMatch = selectedCategory ? (p.category?._id === selectedCategory || p.category === selectedCategory) : true;
+    return searchMatch && categoryMatch;
+  });
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const paginatedProducts = filteredProducts.slice(
@@ -131,10 +140,21 @@ const Products = () => {
               placeholder="Search by name or SKU..."
             />
           </div>
-          <button className="btn-ghost flex items-center gap-2 py-2.5 text-sm">
-            <Filter size={16} />
-            Filters
-          </button>
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="relative flex items-center bg-slate-900/50 rounded-lg border border-slate-700/50">
+              <Filter size={16} className="absolute left-3 text-slate-500 pointer-events-none" />
+              <select
+                value={selectedCategory}
+                onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
+                className="input-field pl-9 py-2.5 sm:text-sm bg-transparent border-none focus:ring-0 appearance-none cursor-pointer pr-8"
+              >
+                <option value="">All Categories</option>
+                {categories.map(c => (
+                  <option key={c._id} value={c._id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
         {/* Table */}

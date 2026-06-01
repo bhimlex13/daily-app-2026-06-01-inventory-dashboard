@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { fetchProducts, createTransaction } from '../api';
+import { fetchProducts, fetchCategories, createTransaction } from '../api';
 import { useSettings } from '../contexts/SettingsContext';
 import { Search, ShoppingCart, Plus, Minus, X, CreditCard, Banknote, Package } from 'lucide-react';
 
@@ -8,6 +8,8 @@ const POS = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [isProcessing, setIsProcessing] = useState(false);
   
@@ -16,10 +18,15 @@ const POS = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const response = await fetchProducts({ limit: 100 });
-        if (response.data.success) {
-          // Only show products with stock
-          setProducts(response.data.data.filter(p => p.quantity > 0));
+        const [productsRes, categoriesRes] = await Promise.all([
+          fetchProducts({ limit: 100 }),
+          fetchCategories()
+        ]);
+        if (productsRes.data.success) {
+          setProducts(productsRes.data.data.filter(p => p.quantity > 0));
+        }
+        if (categoriesRes.data.success) {
+          setCategories(categoriesRes.data.data);
         }
       } catch (error) {
         console.error('Failed to load products for POS:', error);
@@ -31,11 +38,12 @@ const POS = () => {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    return products.filter(p => 
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      p.sku.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [products, searchTerm]);
+    return products.filter(p => {
+      const searchMatch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.sku.toLowerCase().includes(searchTerm.toLowerCase());
+      const categoryMatch = selectedCategory ? (p.category?._id === selectedCategory || p.category === selectedCategory) : true;
+      return searchMatch && categoryMatch;
+    });
+  }, [products, searchTerm, selectedCategory]);
 
   const addToCart = (product) => {
     setCart(prev => {
@@ -131,17 +139,31 @@ const POS = () => {
           </div>
         </div>
 
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search size={18} className="text-slate-500" />
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="relative flex-1">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search size={18} className="text-slate-500" />
+            </div>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="input-field pl-10 py-3"
+              placeholder="Search products by name or SKU..."
+            />
           </div>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="input-field pl-10 py-3"
-            placeholder="Search products by name or SKU..."
-          />
+          <div className="relative flex items-center bg-[#1e293b] rounded-xl border border-slate-700/50 min-w-[200px]">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="input-field py-3 bg-transparent border-none focus:ring-0 appearance-none cursor-pointer pl-4 pr-8"
+            >
+              <option value="">All Categories</option>
+              {categories.map(c => (
+                <option key={c._id} value={c._id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto min-h-[400px] bg-[#1e293b] rounded-2xl border border-slate-800/60 p-4">
