@@ -232,11 +232,15 @@ body {
 [data-theme="light"] .glass-card,
 [data-theme="light"] aside,
 [data-theme="light"] header,
+[data-theme="light"] .bg-\[\#1e293b\],
 [data-theme="light"] .bg-\[\#1e293b\]\/40,
 [data-theme="light"] .bg-\[\#1e293b\]\/50,
 [data-theme="light"] .bg-\[\#1e293b\]\/80,
 [data-theme="light"] .bg-slate-800,
-[data-theme="light"] .bg-slate-900\/20 {
+[data-theme="light"] .bg-slate-800\/40,
+[data-theme="light"] .bg-slate-900\/20,
+[data-theme="light"] .bg-slate-900\/40,
+[data-theme="light"] .bg-slate-900\/50 {
   background: rgba(255, 255, 255, 0.8) !important;
   border-color: rgba(99, 102, 241, 0.2) !important;
 }
