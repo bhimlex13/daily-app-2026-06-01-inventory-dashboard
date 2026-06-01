@@ -8,7 +8,7 @@ Welcome to **Inventorio Pro**! This user manual will guide you through the core 
 
 The **Dashboard** is your command center. It gives you an immediate bird's-eye view of your business operations.
 
-![Dashboard Overview](./screenshots/dashboard.png)
+![Dashboard Overview](./screenshots/Dashboard.png)
 
 ### Key Features:
 - **Total Products & Revenue Stats**: Quickly see how many unique items you track and your total gross revenue.

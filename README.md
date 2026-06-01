@@ -1,6 +1,6 @@
 # 📦 Inventorio Pro - Full Stack Inventory Management
 
-![Inventorio Pro Dashboard](./docs/screenshots/dashboard.png)
+![Inventorio Pro Dashboard](./docs/screenshots/Dashboard.png)
 
 **Inventorio Pro** is a modern, responsive, full-stack inventory management system and Point of Sale (POS) application. Built with the MERN stack (MongoDB, Express, React, Node.js) and styled with a stunning dark-mode-first glassmorphism design using Tailwind CSS. 
 
