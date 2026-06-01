@@ -25,7 +25,7 @@ ChartJS.register(
 );
 
 const StatCard = ({ title, value, icon: Icon, color, trend }) => (
-  <div className="bg-[#1e293b]/40 backdrop-blur-md border border-slate-800/60 rounded-2xl p-6 transition-all hover:bg-[#1e293b]/60 hover:border-slate-700/50">
+  <div className="bg-[#1e293b] border border-slate-800/60 rounded-2xl p-6 transition-all hover:bg-[#1e293b]/80 hover:border-slate-700/50">
     <div className="flex items-start justify-between">
       <div>
         <p className="text-slate-400 text-sm font-medium mb-1">{title}</p>
@@ -182,7 +182,7 @@ const Dashboard = () => {
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="bg-[#1e293b]/40 backdrop-blur-md border border-slate-800/60 rounded-2xl p-6 lg:col-span-2">
+        <div className="bg-[#1e293b] border border-slate-800/60 rounded-2xl p-6 lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
               <Activity size={18} className="text-indigo-400" />
@@ -194,7 +194,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="bg-[#1e293b]/40 backdrop-blur-md border border-slate-800/60 rounded-2xl p-6">
+        <div className="bg-[#1e293b] border border-slate-800/60 rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-slate-100 mb-6 flex items-center gap-2">
             <Archive size={18} className="text-indigo-400" />
             Stock Distribution
@@ -210,7 +210,7 @@ const Dashboard = () => {
       </div>
 
       {/* Low Stock Table */}
-      <div className="bg-[#1e293b]/40 backdrop-blur-md border border-slate-800/60 rounded-2xl p-6">
+      <div className="bg-[#1e293b] border border-slate-800/60 rounded-2xl p-6">
         <h3 className="text-lg font-semibold text-slate-100 mb-6 flex items-center gap-2">
           <AlertTriangle size={18} className="text-rose-400" />
           Low Stock Alerts

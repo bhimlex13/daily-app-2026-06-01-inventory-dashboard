@@ -116,7 +116,7 @@ const Products = () => {
         </button>
       </div>
 
-      <div className="bg-[#1e293b]/40 backdrop-blur-md border border-slate-800/60 rounded-2xl overflow-hidden flex-1 flex flex-col">
+      <div className="bg-[#1e293b] border border-slate-800/60 rounded-2xl overflow-hidden flex-1 flex flex-col">
         {/* Toolbar */}
         <div className="p-4 border-b border-slate-800/60 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-900/20">
           <div className="relative w-full sm:max-w-md">
@@ -140,7 +140,7 @@ const Products = () => {
         {/* Table */}
         <div className="overflow-x-auto flex-1">
           <table className="data-table min-w-[800px]">
-            <thead className="bg-[#1e293b]/90 sticky top-0 z-10 backdrop-blur-md">
+            <thead className="bg-[#1e293b] sticky top-0 z-10">
               <tr>
                 <th>Product</th>
                 <th>SKU</th>
