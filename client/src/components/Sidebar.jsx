@@ -8,6 +8,7 @@ const navItems = [
   { name: 'Point of Sale', path: '/pos', icon: ShoppingCart },
   { name: 'Transactions', path: '/transactions', icon: Receipt },
   { name: 'Products', path: '/products', icon: Package },
+  { name: 'Categories', path: '/categories', icon: Tags },
   { name: 'Settings', path: '/settings', icon: Settings },
 ];
 
