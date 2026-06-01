@@ -256,7 +256,20 @@ const Dashboard = () => {
                     </td>
                     <td className="text-slate-400 font-mono text-sm">{item.sku}</td>
                     <td className="text-right">
-                      <span className="text-slate-200 font-medium">{item.quantity}</span>
+                      <div className="flex flex-col items-end gap-1.5">
+                        <span className="text-slate-200 font-medium">{item.quantity}</span>
+                        <div className="w-16 h-1.5 bg-slate-700/50 rounded-full overflow-hidden flex-shrink-0" title={`Min stock: ${item.minStock}`}>
+                          <div 
+                            className={`h-full rounded-full transition-all duration-500 ${
+                              item.quantity === 0 ? 'bg-rose-500' :
+                              item.quantity <= item.minStock ? 'bg-amber-400' : 'bg-emerald-400'
+                            }`}
+                            style={{ 
+                              width: `${Math.min(100, (item.quantity / Math.max(item.minStock * 3, 10)) * 100)}%` 
+                            }}
+                          ></div>
+                        </div>
+                      </div>
                     </td>
                     <td className="text-right text-slate-400">{item.minStock}</td>
                     <td className="text-center">

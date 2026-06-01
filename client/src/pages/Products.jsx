@@ -189,7 +189,20 @@ const Products = () => {
                       {formatCurrency(product.price)}
                     </td>
                     <td className="text-right">
-                      <span className="text-slate-200">{product.quantity}</span>
+                      <div className="flex flex-col items-end gap-1.5">
+                        <span className="text-slate-200 font-medium">{product.quantity}</span>
+                        <div className="w-16 h-1.5 bg-slate-700/50 rounded-full overflow-hidden flex-shrink-0" title={`Min stock: ${product.minStock}`}>
+                          <div 
+                            className={`h-full rounded-full transition-all duration-500 ${
+                              product.quantity === 0 ? 'bg-rose-500' :
+                              product.quantity <= product.minStock ? 'bg-amber-400' : 'bg-emerald-400'
+                            }`}
+                            style={{ 
+                              width: `${Math.min(100, (product.quantity / Math.max(product.minStock * 3, 10)) * 100)}%` 
+                            }}
+                          ></div>
+                        </div>
+                      </div>
                     </td>
                     <td className="text-center">
                       <span className={`px-2.5 py-1 rounded-full text-xs font-medium border ${
