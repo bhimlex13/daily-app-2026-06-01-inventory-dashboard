@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
+const User = require('../models/User');
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/inventory-dashboard';
 
@@ -46,7 +47,16 @@ const seed = async () => {
     // Clear existing data
     await Category.deleteMany({});
     await Product.deleteMany({});
+    await User.deleteMany({});
     console.log('Cleared existing data');
+
+    // Insert admin user
+    await User.create({
+      username: 'admin',
+      password: 'admin',
+      role: 'admin'
+    });
+    console.log('Inserted default admin user');
 
     // Insert categories
     const createdCategories = await Category.insertMany(categories);

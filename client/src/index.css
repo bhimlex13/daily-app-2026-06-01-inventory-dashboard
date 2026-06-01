@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "./src";
 
 @theme {
   --color-primary-50: #eef2ff;
@@ -32,11 +33,7 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 body {
   font-family: var(--font-sans);
@@ -224,4 +221,43 @@ body {
 }
 .data-table tbody tr:hover {
   background: rgba(99, 102, 241, 0.05);
+}
+
+/* Light Theme Overrides */
+[data-theme="light"] {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+[data-theme="light"] .glass,
+[data-theme="light"] .glass-card,
+[data-theme="light"] aside,
+[data-theme="light"] header,
+[data-theme="light"] .bg-\[\#1e293b\]\/40,
+[data-theme="light"] .bg-\[\#1e293b\]\/50,
+[data-theme="light"] .bg-\[\#1e293b\]\/80,
+[data-theme="light"] .bg-slate-800,
+[data-theme="light"] .bg-slate-900\/20 {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+[data-theme="light"] .text-slate-100,
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300,
+[data-theme="light"] .text-white {
+  color: #0f172a !important;
+}
+[data-theme="light"] .text-slate-400,
+[data-theme="light"] .text-slate-500 {
+  color: #475569 !important;
+}
+[data-theme="light"] .input-field {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #0f172a !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+}
+[data-theme="light"] .data-table th {
+  color: #475569 !important;
+}
+[data-theme="light"] .data-table td {
+  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
 }

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { fetchProducts, createProduct, updateProduct, deleteProduct } from '../api';
 import { Search, Plus, Filter, Package, Trash2, Edit2 } from 'lucide-react';
 import ProductFormModal from '../components/ProductFormModal';
+import { useSettings } from '../contexts/SettingsContext';
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,6 +14,7 @@ const Products = () => {
   const itemsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const { formatCurrency, lowStockThreshold } = useSettings();
 
   useEffect(() => {
     loadProducts();
@@ -180,7 +182,7 @@ const Products = () => {
                     </td>
                     <td className="text-slate-400 font-mono text-sm">{product.sku}</td>
                     <td className="text-right text-slate-300 font-medium">
-                      ${product.price.toFixed(2)}
+                      {formatCurrency(product.price)}
                     </td>
                     <td className="text-right">
                       <span className="text-slate-200">{product.quantity}</span>

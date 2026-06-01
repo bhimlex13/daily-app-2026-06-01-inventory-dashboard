@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
 const Layout = () => {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+
   return (
     <div className="flex h-screen text-slate-200 overflow-hidden font-sans bg-transparent">
-      <Sidebar />
+      <Sidebar isMobileOpen={isMobileOpen} setIsMobileOpen={setIsMobileOpen} />
       <div className="flex-1 flex flex-col min-w-0">
-        <Header />
+        <Header setIsMobileOpen={setIsMobileOpen} />
         <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-transparent">
           <div className="max-w-7xl mx-auto">
             <Outlet />

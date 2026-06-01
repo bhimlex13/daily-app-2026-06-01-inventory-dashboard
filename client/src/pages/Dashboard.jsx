@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchDashboard } from '../api';
+import { useSettings } from '../contexts/SettingsContext';
 import { Package, AlertTriangle, DollarSign, TrendingUp, Archive, Activity } from 'lucide-react';
 import {
   Chart as ChartJS,
@@ -47,6 +48,7 @@ const StatCard = ({ title, value, icon: Icon, color, trend }) => (
 const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { formatCurrency } = useSettings();
 
   useEffect(() => {
     const loadData = async () => {
@@ -159,7 +161,7 @@ const Dashboard = () => {
         />
         <StatCard 
           title="Total Value" 
-          value={`$${overview.totalValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`} 
+          value={formatCurrency(overview.totalValue)} 
           icon={DollarSign} 
           color="bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-lg shadow-emerald-500/20" 
           trend="+5.4%"
