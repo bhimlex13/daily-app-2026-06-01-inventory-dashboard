@@ -239,10 +239,14 @@ const Dashboard = () => {
                     <td>
                       <div className="flex items-center gap-3">
                         <div 
-                          className="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-sm"
-                          style={{ backgroundColor: item.category?.color || '#334155' }}
+                          className="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-sm overflow-hidden"
+                          style={{ backgroundColor: item.image ? 'transparent' : (item.category?.color || '#334155') }}
                         >
-                          <Package size={20} />
+                          {item.image ? (
+                            <img src={`http://localhost:5000${item.image}`} alt={item.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <Package size={20} />
+                          )}
                         </div>
                         <div>
                           <p className="font-medium text-slate-200">{item.name}</p>

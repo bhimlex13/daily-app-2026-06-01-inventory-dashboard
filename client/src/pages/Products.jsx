@@ -169,10 +169,14 @@ const Products = () => {
                     <td>
                       <div className="flex items-center gap-4">
                         <div 
-                          className="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-sm flex-shrink-0"
-                          style={{ backgroundColor: product.category?.color || '#334155' }}
+                          className="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-sm flex-shrink-0 overflow-hidden"
+                          style={{ backgroundColor: product.image ? 'transparent' : (product.category?.color || '#334155') }}
                         >
-                          <Package size={20} />
+                          {product.image ? (
+                            <img src={`http://localhost:5000${product.image}`} alt={product.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <Package size={20} />
+                          )}
                         </div>
                         <div>
                           <p className="font-medium text-slate-200">{product.name}</p>

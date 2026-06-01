@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Upload, Image as ImageIcon } from 'lucide-react';
 import { fetchCategories } from '../api';
 
 const ProductFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
@@ -14,6 +14,8 @@ const ProductFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => 
     minStock: 10,
     description: ''
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
 
   useEffect(() => {
     if (isOpen) {
@@ -28,6 +30,8 @@ const ProductFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => 
           minStock: initialData.minStock || 10,
           description: initialData.description || ''
         });
+        setImagePreview(initialData.image ? `http://localhost:5000${initialData.image}` : '');
+        setImageFile(null);
       } else {
         setFormData({
           name: '',
@@ -38,6 +42,8 @@ const ProductFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => 
           minStock: 10,
           description: ''
         });
+        setImagePreview('');
+        setImageFile(null);
       }
     }
   }, [isOpen, initialData]);
@@ -58,17 +64,34 @@ const ProductFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => 
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     
-    // Convert numeric fields
-    const payload = {
-      ...formData,
-      price: parseFloat(formData.price),
-      quantity: parseInt(formData.quantity, 10),
-      minStock: parseInt(formData.minStock, 10)
-    };
+    const payload = new FormData();
+    payload.append('name', formData.name);
+    payload.append('sku', formData.sku);
+    payload.append('category', formData.category);
+    payload.append('price', parseFloat(formData.price));
+    payload.append('quantity', parseInt(formData.quantity, 10));
+    payload.append('minStock', parseInt(formData.minStock, 10));
+    payload.append('description', formData.description);
+    
+    if (imageFile) {
+      payload.append('image', imageFile);
+    }
 
     try {
       await onSubmit(payload);
@@ -195,6 +218,27 @@ const ProductFormModal = ({ isOpen, onClose, onSubmit, initialData = null }) => 
                 className="input-field resize-none"
                 placeholder="Brief product description..."
               ></textarea>
+            </div>
+
+            <div className="col-span-1 md:col-span-2 space-y-2">
+              <label className="block text-sm font-medium text-slate-400">Product Image</label>
+              <div className="flex items-center gap-4">
+                <div className="w-24 h-24 rounded-xl border-2 border-dashed border-slate-700/60 flex items-center justify-center bg-slate-900/20 overflow-hidden flex-shrink-0">
+                  {imagePreview ? (
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <ImageIcon size={24} className="text-slate-500" />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <label className="cursor-pointer btn-ghost inline-flex items-center gap-2">
+                    <Upload size={16} />
+                    Choose Image
+                    <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                  </label>
+                  <p className="text-xs text-slate-500 mt-2">JPEG, PNG or WebP up to 5MB</p>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -66,6 +66,9 @@ exports.getProduct = async (req, res) => {
 // @route   POST /api/products
 exports.createProduct = async (req, res) => {
   try {
+    if (req.file) {
+      req.body.image = `/uploads/${req.file.filename}`;
+    }
     const product = await Product.create(req.body);
     const populated = await product.populate('category', 'name color icon');
     res.status(201).json({ success: true, data: populated });
@@ -81,6 +84,9 @@ exports.createProduct = async (req, res) => {
 // @route   PUT /api/products/:id
 exports.updateProduct = async (req, res) => {
   try {
+    if (req.file) {
+      req.body.image = `/uploads/${req.file.filename}`;
+    }
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
