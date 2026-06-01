@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, Tags, Settings, LogOut, ChevronLeft, ChevronRight, X, ShoppingCart } from 'lucide-react';
+import { LayoutDashboard, Package, Tags, Settings, LogOut, ChevronLeft, ChevronRight, X, ShoppingCart, Receipt } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const navItems = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { name: 'Point of Sale', path: '/pos', icon: ShoppingCart },
+  { name: 'Transactions', path: '/transactions', icon: Receipt },
   { name: 'Products', path: '/products', icon: Package },
   { name: 'Settings', path: '/settings', icon: Settings },
 ];

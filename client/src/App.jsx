@@ -4,12 +4,13 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
 import POS from './pages/POS';
+import Transactions from './pages/Transactions';
+import Settings from './pages/Settings';
 
 import { AuthProvider } from './contexts/AuthContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
-import Settings from './pages/Settings';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="products" element={<Products />} />
             <Route path="pos" element={<POS />} />
+            <Route path="transactions" element={<Transactions />} />
             <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>
